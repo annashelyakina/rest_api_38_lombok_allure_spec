@@ -1,12 +1,15 @@
 package in.reqres;
 
 import models.lombok.*;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static specs.RegisterSpec.*;
 
@@ -30,6 +33,9 @@ public class RegisterTests extends TestBase{
                 .extract().as(RegisterResponseLombokModel.class));
 
         step("Check response", ()->{
+                assertThat(response.getToken(), is(notNullValue()));
+                assertThat(response.getToken().length(), is(greaterThanOrEqualTo(17)));
+                assertThat(response.getToken(), is(matchesRegex("\\S[a-zA-Z0-9]*\\S")));
                 assertEquals("QpwL5tke4Pnpja7X4", response.getToken());
                 assertEquals("4", response.getId());
         });
