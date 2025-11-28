@@ -12,6 +12,11 @@ import static io.restassured.RestAssured.with;
 
 public class RegisterSpec {
 
+    public static RequestSpecification getUserRequestSpec = with()
+            .filter(withCustomTemplates())
+            .log().all()
+            .header(Constants.validApiKey);
+
     public static RequestSpecification registerRequestSpec = with()
             .filter(withCustomTemplates())
             .log().all()
@@ -29,13 +34,18 @@ public class RegisterSpec {
             .log(LogDetail.ALL)
             .build();
 
-    public static ResponseSpecification responseSpec403 = new ResponseSpecBuilder()
-            .expectStatusCode(403)
+    public static ResponseSpecification responseSpec204 = new ResponseSpecBuilder()
+            .expectStatusCode(204)
             .log(LogDetail.ALL)
             .build();
 
     public static ResponseSpecification responseSpec400 = new ResponseSpecBuilder()
             .expectStatusCode(400)
+            .log(LogDetail.ALL)
+            .build();
+
+    public static ResponseSpecification responseSpec403 = new ResponseSpecBuilder()
+            .expectStatusCode(403)
             .log(LogDetail.ALL)
             .build();
 }
