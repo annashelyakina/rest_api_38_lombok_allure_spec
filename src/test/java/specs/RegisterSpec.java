@@ -14,48 +14,28 @@ public class RegisterSpec {
 
     public static RequestSpecification registerRequestSpec = with()
             .filter(withCustomTemplates())
-            .log().uri()
-            .log().body()
-            .log().headers()
+            .log().all()
             .header(Constants.validApiKey)
             .contentType(ContentType.JSON);
 
-    public static ResponseSpecification registerResponseSpec = new ResponseSpecBuilder()
-            .expectStatusCode(200)
-            .log(LogDetail.STATUS)
-            .log(LogDetail.BODY)
-            .build();
-
     public static RequestSpecification invalidApiKeyRequestSpec = with()
             .filter(withCustomTemplates())
-            .log().uri()
-            .log().body()
-            .log().headers()
+            .log().all()
             .header(Constants.invalidApiKey)
             .contentType(ContentType.JSON);
 
-    public static ResponseSpecification invalidApiKeyResponseSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification responseSpec200 = new ResponseSpecBuilder()
+            .expectStatusCode(200)
+            .log(LogDetail.ALL)
+            .build();
+
+    public static ResponseSpecification responseSpec403 = new ResponseSpecBuilder()
             .expectStatusCode(403)
-            .log(LogDetail.STATUS)
-            .log(LogDetail.BODY)
+            .log(LogDetail.ALL)
             .build();
 
-    public static ResponseSpecification invalidEmailResponseSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification responseSpec400 = new ResponseSpecBuilder()
             .expectStatusCode(400)
-            .log(LogDetail.STATUS)
-            .log(LogDetail.BODY)
+            .log(LogDetail.ALL)
             .build();
-
-    public static ResponseSpecification missingEmailResponseSpec = new ResponseSpecBuilder()
-            .expectStatusCode(400)
-            .log(LogDetail.STATUS)
-            .log(LogDetail.BODY)
-            .build();
-
-    public static ResponseSpecification missingPasswordResponseSpec = new ResponseSpecBuilder()
-            .expectStatusCode(400)
-            .log(LogDetail.STATUS)
-            .log(LogDetail.BODY)
-            .build();
-
 }

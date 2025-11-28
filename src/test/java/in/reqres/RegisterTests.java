@@ -28,7 +28,7 @@ public class RegisterTests extends TestBase{
         .when()
                 .post()
         .then()
-                .spec(registerResponseSpec)
+                .spec(responseSpec200)
                 .extract().as(RegisterResponseLombokModel.class));
 
         step("Check response", ()->{
@@ -53,7 +53,7 @@ public class RegisterTests extends TestBase{
         .when()
                 .post()
         .then()
-                .spec(invalidApiKeyResponseSpec)
+                .spec(responseSpec403)
                 .extract().as(RegisterErrorResponceLombokModel.class));
 
         step("Check response", ()->
@@ -74,7 +74,7 @@ public class RegisterTests extends TestBase{
         .when()
                 .post()
         .then()
-                .spec(invalidEmailResponseSpec)
+                .spec(responseSpec400)
                 .extract().as(RegisterErrorResponceLombokModel.class));
         step("Check response", ()->
                 assertEquals("Note: Only defined users succeed registration", response.getError()));
@@ -92,7 +92,7 @@ public class RegisterTests extends TestBase{
         .when()
                 .post()
         .then()
-                .spec(missingEmailResponseSpec)
+                .spec(responseSpec400)
                 .extract().as(RegisterErrorResponceLombokModel.class));
         step("Check response", ()->
                 assertEquals("Missing email or username", response.getError()));
@@ -110,8 +110,8 @@ public class RegisterTests extends TestBase{
         .when()
                 .post()
         .then()
-                .spec(missingPasswordResponseSpec)
-                .extract().as(RegisterErrorResponceLombokModel.class));
+                .spec(responseSpec400)
+                .extract().as(RegisterErrorResponceLombokModel .class));
         step("Check response", ()->
                 assertEquals("Missing password", response.getError()));
     }
