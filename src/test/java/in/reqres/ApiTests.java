@@ -118,7 +118,7 @@ public class ApiTests  extends TestBase{
     }
 
     @Test
-    @DisplayName("Проверка получения данных для существующего пользователя")
+    @DisplayName("Проверка получения данных методом GET для существующего пользователя")
     void successfulGetUserTest() {
         GetUserResponseLombokModel response = step("Make request", () ->
                 given(getUserRequestSpec)
@@ -181,7 +181,7 @@ public class ApiTests  extends TestBase{
     }
 
     @Test
-    @DisplayName("Проверка удаления данных для существующего пользователя")
+    @DisplayName("Проверка удаления пользователя методом DELETE")
     void successfulDeleteUserTest() {
          step("Make request", ()->
                 given(getUserRequestSpec)
