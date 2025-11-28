@@ -1,7 +1,6 @@
 package in.reqres;
 
 import models.lombok.*;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -48,14 +47,14 @@ public class RegisterTests extends TestBase{
         authData.setEmail(Constants.validEmail);
         authData.setPassword(Constants.validPassword);
 
-        InvalidApiKeyLombokModel response = step("Make request", ()->
+        RegisterErrorResponceLombokModel response = step("Make request", ()->
         given(invalidApiKeyRequestSpec)
                 .body(authData)
         .when()
                 .post()
         .then()
                 .spec(invalidApiKeyResponseSpec)
-                .extract().as(InvalidApiKeyLombokModel.class));
+                .extract().as(RegisterErrorResponceLombokModel.class));
 
         step("Check response", ()->
                 assertEquals("Invalid or inactive API key", response.getError()));
@@ -69,14 +68,14 @@ public class RegisterTests extends TestBase{
         authData.setEmail(Constants.invalidEmail);
         authData.setPassword(Constants.validPassword);
 
-        InvalidEmailLombokModel response = step("Make request", ()->
+        RegisterErrorResponceLombokModel response = step("Make request", ()->
         given(registerRequestSpec)
                 .body(authData)
         .when()
                 .post()
         .then()
                 .spec(invalidEmailResponseSpec)
-                .extract().as(InvalidEmailLombokModel.class));
+                .extract().as(RegisterErrorResponceLombokModel.class));
         step("Check response", ()->
                 assertEquals("Note: Only defined users succeed registration", response.getError()));
     }
@@ -87,14 +86,14 @@ public class RegisterTests extends TestBase{
         RegisterBodyLombokModel authData = new RegisterBodyLombokModel();
         authData.setPassword(Constants.validPassword);
 
-        MissingEmailLombokModel  response = step("Make request", ()->
+        RegisterErrorResponceLombokModel  response = step("Make request", ()->
         given(registerRequestSpec)
                 .body(authData)
         .when()
                 .post()
         .then()
                 .spec(missingEmailResponseSpec)
-                .extract().as(MissingEmailLombokModel.class));
+                .extract().as(RegisterErrorResponceLombokModel.class));
         step("Check response", ()->
                 assertEquals("Missing email or username", response.getError()));
     }
@@ -105,14 +104,14 @@ public class RegisterTests extends TestBase{
         RegisterBodyLombokModel authData = new RegisterBodyLombokModel();
         authData.setEmail(Constants.validEmail);
 
-        MissingPasswordModel  response = step("Make request", ()->
+        RegisterErrorResponceLombokModel  response = step("Make request", ()->
         given(registerRequestSpec)
                 .body(authData)
         .when()
                 .post()
         .then()
                 .spec(missingPasswordResponseSpec)
-                .extract().as(MissingPasswordModel.class));
+                .extract().as(RegisterErrorResponceLombokModel.class));
         step("Check response", ()->
                 assertEquals("Missing password", response.getError()));
     }
