@@ -1,5 +1,6 @@
 package in.reqres;
 
+import io.restassured.response.ValidatableResponse;
 import models.lombok.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -13,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static specs.RegisterSpec.*;
 
 @Tag("api_tests")
-public class RegisterTests extends TestBase{
+public class ApiTests  extends TestBase{
 
     @Test
     @DisplayName("Проверка успешной регистрации пользователя с валидными данными")
@@ -26,7 +27,7 @@ public class RegisterTests extends TestBase{
         given(registerRequestSpec)
                 .body(authData)
         .when()
-                .post()
+                .post("/register")
         .then()
                 .spec(responseSpec200)
                 .extract().as(RegisterResponseLombokModel.class));
@@ -51,7 +52,7 @@ public class RegisterTests extends TestBase{
         given(invalidApiKeyRequestSpec)
                 .body(authData)
         .when()
-                .post()
+                .post("/register")
         .then()
                 .spec(responseSpec403)
                 .extract().as(RegisterErrorResponceLombokModel.class));
@@ -72,7 +73,7 @@ public class RegisterTests extends TestBase{
         given(registerRequestSpec)
                 .body(authData)
         .when()
-                .post()
+                .post("/register")
         .then()
                 .spec(responseSpec400)
                 .extract().as(RegisterErrorResponceLombokModel.class));
@@ -90,7 +91,7 @@ public class RegisterTests extends TestBase{
         given(registerRequestSpec)
                 .body(authData)
         .when()
-                .post()
+                .post("/register")
         .then()
                 .spec(responseSpec400)
                 .extract().as(RegisterErrorResponceLombokModel.class));
@@ -108,11 +109,86 @@ public class RegisterTests extends TestBase{
         given(registerRequestSpec)
                 .body(authData)
         .when()
-                .post()
+                .post("/register")
         .then()
                 .spec(responseSpec400)
                 .extract().as(RegisterErrorResponceLombokModel .class));
         step("Check response", ()->
                 assertEquals("Missing password", response.getError()));
     }
+
+    @Test
+    @DisplayName("Проверка получения данных для существующего пользователя")
+    void successfulGetUserTest() {
+        GetUserResponseLombokModel response = step("Make request", () ->
+                given(getUserRequestSpec)
+                        .when()
+                        .get("/users/2")
+                        .then()
+                        .spec(responseSpec200)
+                        .extract().as(GetUserResponseLombokModel.class));
+        step("Check response", () -> {
+            assertEquals("2", response.getData().getId());
+            assertEquals("janet.weaver@reqres.in", response.getData().getEmail());
+            assertEquals("Janet", response.getData().getFirst_name());
+            assertEquals("Weaver", response.getData().getLast_name());
+            assertEquals("https://reqres.in/img/faces/2-image.jpg", response.getData().getAvatar());
+        });
+    }
+
+        @Test
+        @DisplayName("Проверка обновления данных методом PUT для существующего пользователя")
+        void successfulPutUserTest() {
+            UpdateResponseLombokModel authData = new UpdateResponseLombokModel();
+            authData.setName(Constants.validName);
+            authData.setJob(Constants.validJob);
+
+            UpdateResponseLombokModel response = step("Make request", () ->
+                    given(registerRequestSpec)
+                            .body(authData)
+                            .when()
+                            .put("/users/2")
+                            .then()
+                            .spec(responseSpec200)
+                            .extract().as(UpdateResponseLombokModel.class));
+
+            step("Check response", () -> {
+                assertEquals("morpheus", response.getName());
+                assertEquals("zion resident", response.getJob());
+            });
+        }
+
+            @Test
+            @DisplayName("Проверка обновления данных методом PATCH для существующего пользователя")
+            void successfulPatchUserTest() {
+                UpdateResponseLombokModel authData = new UpdateResponseLombokModel();
+                authData.setName(Constants.validName);
+                authData.setJob(Constants.validJob);
+
+                UpdateResponseLombokModel response = step("Make request", ()->
+                        given(registerRequestSpec)
+                                .body(authData)
+                                .when()
+                                .patch("/users/2")
+                                .then()
+                                .spec(responseSpec200)
+                                .extract().as(UpdateResponseLombokModel.class));
+
+                step("Check response", ()->{
+                    assertEquals("morpheus", response.getName());
+                    assertEquals("zion resident", response.getJob());
+                });
+    }
+
+    @Test
+    @DisplayName("Проверка удаления данных для существующего пользователя")
+    void successfulDeleteUserTest() {
+        ValidatableResponse response = step("Make request", ()->
+                given(getUserRequestSpec)
+                .when()
+                        .delete("/users/2")
+                .then()
+                        .spec(responseSpec204));
+    }
+
 }
