@@ -183,7 +183,7 @@ public class ApiTests  extends TestBase{
     @Test
     @DisplayName("Проверка удаления данных для существующего пользователя")
     void successfulDeleteUserTest() {
-        ValidatableResponse response = step("Make request", ()->
+         step("Make request", ()->
                 given(getUserRequestSpec)
                 .when()
                         .delete("/users/2")
