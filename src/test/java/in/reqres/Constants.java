@@ -9,4 +9,6 @@ public class Constants {
     public static final String validEmail = "eve.holt@reqres.in";
     public static final String validPassword = "pistol";
     public static final String invalidEmail = "eve111.holt@reqres.in";
+    public static final String validName = "morpheus";
+    public static final String validJob = "zion resident";
  }
