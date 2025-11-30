@@ -1,6 +1,5 @@
 package in.reqres;
 
-import io.restassured.response.ValidatableResponse;
 import models.lombok.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -20,8 +19,8 @@ public class ApiTests  extends TestBase{
     @DisplayName("Проверка успешной регистрации пользователя с валидными данными")
     void successfulRegisterTest() {
         RegisterBodyLombokModel authData = new RegisterBodyLombokModel();
-        authData.setEmail(Constants.validEmail);
-        authData.setPassword(Constants.validPassword);
+        authData.setEmail(Constants.VALID_EMAIL);
+        authData.setPassword(Constants.VALID_PASSWORD);
 
         RegisterResponseLombokModel response = step("Make request", ()->
         given(registerRequestSpec)
@@ -45,8 +44,8 @@ public class ApiTests  extends TestBase{
     @DisplayName("Проверка статус кода и сообщения об ошибке в случае невалидного 'api key' для регистрации ")
     void invalidApiKeyTest() {
         RegisterBodyLombokModel authData = new RegisterBodyLombokModel();
-        authData.setEmail(Constants.validEmail);
-        authData.setPassword(Constants.validPassword);
+        authData.setEmail(Constants.VALID_EMAIL);
+        authData.setPassword(Constants.VALID_PASSWORD);
 
         RegisterErrorResponceLombokModel response = step("Make request", ()->
         given(invalidApiKeyRequestSpec)
@@ -66,8 +65,8 @@ public class ApiTests  extends TestBase{
     @DisplayName("Проверка статус кода и сообщения об ошибке в случае невалидного 'email' для регистрации")
     void invalidEmailTest() {
         RegisterBodyLombokModel authData = new RegisterBodyLombokModel();
-        authData.setEmail(Constants.invalidEmail);
-        authData.setPassword(Constants.validPassword);
+        authData.setEmail(Constants.INVALID_EMAIL);
+        authData.setPassword(Constants.VALID_PASSWORD);
 
         RegisterErrorResponceLombokModel response = step("Make request", ()->
         given(registerRequestSpec)
@@ -85,7 +84,7 @@ public class ApiTests  extends TestBase{
     @DisplayName("Проверка статус кода и сообщения об ошибке в случае отсутствия 'email' для регистрации")
     void missingEmailForRegisterTest() {
         RegisterBodyLombokModel authData = new RegisterBodyLombokModel();
-        authData.setPassword(Constants.validPassword);
+        authData.setPassword(Constants.VALID_PASSWORD);
 
         RegisterErrorResponceLombokModel  response = step("Make request", ()->
         given(registerRequestSpec)
@@ -103,7 +102,7 @@ public class ApiTests  extends TestBase{
     @DisplayName("Проверка статус кода и сообщения об ошибке в случае отсутствия 'password' для регистрации")
     void missingPasswordForRegisterTest() {
         RegisterBodyLombokModel authData = new RegisterBodyLombokModel();
-        authData.setEmail(Constants.validEmail);
+        authData.setEmail(Constants.VALID_EMAIL);
 
         RegisterErrorResponceLombokModel  response = step("Make request", ()->
         given(registerRequestSpec)
@@ -140,8 +139,8 @@ public class ApiTests  extends TestBase{
         @DisplayName("Проверка обновления данных методом PUT для существующего пользователя")
         void successfulPutUserTest() {
             UpdateResponseLombokModel authData = new UpdateResponseLombokModel();
-            authData.setName(Constants.validName);
-            authData.setJob(Constants.validJob);
+            authData.setName(Constants.VALID_NAME);
+            authData.setJob(Constants.VALID_JOB);
 
             UpdateResponseLombokModel response = step("Make request", () ->
                     given(registerRequestSpec)
@@ -162,8 +161,8 @@ public class ApiTests  extends TestBase{
             @DisplayName("Проверка обновления данных методом PATCH для существующего пользователя")
             void successfulPatchUserTest() {
                 UpdateResponseLombokModel authData = new UpdateResponseLombokModel();
-                authData.setName(Constants.validName);
-                authData.setJob(Constants.validJob);
+                authData.setName(Constants.VALID_NAME);
+                authData.setJob(Constants.VALID_JOB);
 
                 UpdateResponseLombokModel response = step("Make request", ()->
                         given(registerRequestSpec)

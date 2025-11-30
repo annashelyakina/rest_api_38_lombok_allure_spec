@@ -15,18 +15,18 @@ public class RegisterSpec {
     public static RequestSpecification getUserRequestSpec = with()
             .filter(withCustomTemplates())
             .log().all()
-            .header(Constants.validApiKey);
+            .header(Constants.VALID_API_KEY);
 
     public static RequestSpecification registerRequestSpec = with()
             .filter(withCustomTemplates())
             .log().all()
-            .header(Constants.validApiKey)
+            .header(Constants.VALID_API_KEY)
             .contentType(ContentType.JSON);
 
     public static RequestSpecification invalidApiKeyRequestSpec = with()
             .filter(withCustomTemplates())
             .log().all()
-            .header(Constants.invalidApiKey)
+            .header(Constants.INVALID_API_KEY)
             .contentType(ContentType.JSON);
 
     public static ResponseSpecification responseSpec200 = new ResponseSpecBuilder()
