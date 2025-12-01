@@ -47,17 +47,17 @@ public class ApiTests  extends TestBase{
         authData.setEmail(Constants.VALID_EMAIL);
         authData.setPassword(Constants.VALID_PASSWORD);
 
-        RegisterErrorResponceLombokModel response = step("Make request", ()->
+        InvalidApiErrorResponceLombokModel response = step("Make request", ()->
         given(invalidApiKeyRequestSpec)
                 .body(authData)
         .when()
                 .post("/register")
         .then()
                 .spec(responseSpec403)
-                .extract().as(RegisterErrorResponceLombokModel.class));
+                .extract().as(InvalidApiErrorResponceLombokModel.class));
 
         step("Check response", ()->
-                assertEquals("Invalid or inactive API key", response.getError()));
+                assertEquals("invalid_api_key", response.getError()));
 
     }
 
